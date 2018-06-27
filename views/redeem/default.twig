@@ -6,8 +6,8 @@
             <div class="form-text">{% if code is defined %}Your voucher for a new STEEM account is valid!{% else %}Please enter your voucher code:{% endif %}</div>
         </div>
         <div class="form-group">
-            <input value="{{ code.code }}" {% if code is defined %}readonly{% else %}autofocus{% endif %} maxlength="12"
-                   required class="form-control text-center" type="text" name="code">
+            <input value="{{ code.code }}" {% if code is defined %}readonly{% else %}autofocus{% endif %} required
+                   class="form-control text-center" type="text" name="code">
         </div>
 
         <div class="my-3">
