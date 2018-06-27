@@ -1,0 +1,59 @@
+{% extends './layout.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h2>Code Overview</h2>
+        </div>
+    </div>
+    <div class="row">
+<div class="col-12">
+    <a href="/admin/codes/create" class="btn btn-block btn-primary">Create Codes</a>
+</div>
+        <div class="col-12 mt-3">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>CODE</th>
+                    <th>USED</th>
+                    <th>ACCOUNT</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for code in codes %}
+                    <tr>
+                        <td>{{ code.id }}</td>
+                        <td>{{ code.code }}</td>
+                        <td>{% if code.used is not null %}{{ code.used|date("d. M Y H:i:s") }}{% else %}not yet{% endif %}</td>
+                        {% if code.credentials is not null %}
+                            {% set credentials = code.credentials|json_decode %}
+                            <td><a href="https://stemmit.com/@{{ credentials.username }}">{{ credentials.username }}</a></td>
+                        {% else %}
+                            <td><i>not used</i></td>
+                        {% endif %}
+                        <td class="text-right">
+                            <div class="btn-group">
+                                {% if code.username is null %}
+                                    <a href="/admin/codes/{{ code.id }}/delete" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                    <a class="btn btn-sm btn-info" href="#" onclick="prompt('Share this link: ','{{ host }}/r/{{ code.code }}')">
+                                        <i class="fa fa-share"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="/admin/getInfo?code={{ code.code }}" class="btn btn-sm btn-info">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+{% endblock %}

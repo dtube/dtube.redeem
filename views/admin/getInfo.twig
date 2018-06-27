@@ -1,0 +1,121 @@
+{% extends './layout.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h2>Code Search</h2>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-12">
+            {% if code is defined %}
+                {% if code.username is not null %}
+                    {% set credentials = code.credentials|json_decode %}
+                    <div class="card">
+                        <div class="card border-success">
+                            <div class="card-header text-dark text-center font-weight-bold">
+                                <h3 class="card-title mb-0" style="text-transform: none;">
+                                    The account <b>{{ code.username }}</b> was created with this code!</h3></div>
+                            <div class="card-body text-dark pt-0">
+                                <div class="form-group">
+                                    Used:
+                                    <input class="form-control" type="text" readonly
+                                           value="{{ code.used|date("d. M Y H:i:s") }}">
+                                </div>
+                                <div class="form-group">
+                                    Public <b>Owner</b> Key:
+                                    <input class="form-control" type="text" readonly
+                                           value="{{ credentials.keys.owner.key_auths[0][0] }}">
+                                </div>
+                                <div class="form-group">
+                                    Public <b>Active</b> Key:
+                                    <input class="form-control" type="text" readonly
+                                           value="{{ credentials.keys.active.key_auths[0][0] }}">
+                                </div>
+                                <div class="form-group">
+                                    Public <b>Posting</b> Key:
+                                    <input class="form-control" type="text" readonly
+                                           value="{{ credentials.keys.posting.key_auths[0][0] }}">
+                                </div>
+                                <hr/>
+                                <form method="get" action="/admin/getInfo">
+
+                                    <div class="form-group">
+                                        <label for="code">Code</label>
+                                        <input type="text" class="form-control" name="code">
+                                        <aside class="text-muted">Enter a code from your database and get a lot of
+                                            informations!
+                                        </aside>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-primary" value="Search">
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="card">
+                        <div class="card-header">
+                            Code Found!
+                        </div>
+                        <div class="card-body">
+                            {% if not_found is defined %}
+                                <p class="card-text">
+                                    The given code wasn't used so far!
+                                </p>
+                            {% endif %}
+                            <form method="get" action="/admin/getInfo">
+
+                                <div class="form-group">
+                                    <label for="code">Code</label>
+                                    <input type="text" class="form-control" name="code">
+                                    <aside class="text-muted">Enter a code from your database and get a lot of
+                                        informations!
+                                    </aside>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-primary" value="Search">
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="card">
+                    <div class="card-header">
+                        {% if not_found == true %}Not Found{% else %}Search Codes{% endif %}
+                    </div>
+                    <div class="card-body">
+                        {% if not_found == true %}
+                            <p class="card-text">
+                                The given code was not found.
+                            </p>
+                        {% endif %}
+                        <form method="get" action="/admin/getInfo">
+
+                            <div class="form-group">
+                                <label for="code">Code</label>
+                                <input type="text" class="form-control" name="code">
+                                <aside class="text-muted">Enter a code from your database and get a lot of
+                                    informations!
+                                </aside>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-primary" value="Search">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+{% endblock %}

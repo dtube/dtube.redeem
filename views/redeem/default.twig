@@ -1,0 +1,22 @@
+{% extends '../layout.twig' %}
+
+{% block body %}
+    <form action="/r/{% if code is defined %}{{ code.code }}/1{% endif %}" method="post">
+        <div class="form-group">
+            <div class="form-text">{% if code is defined %}Your voucher for a new STEEM account is valid!{% else %}Please enter your voucher code:{% endif %}</div>
+        </div>
+        <div class="form-group">
+            <input value="{{ code.code }}" {% if code is defined %}readonly{% else %}autofocus{% endif %} maxlength="12"
+                   required class="form-control text-center" type="text" name="code">
+        </div>
+
+        <div class="my-3">
+            <input type="submit"
+                   class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
+                   value="Redeem"/>
+        </div>
+        <div id="support" class="text-center mt-4 font-weight-light">
+            Need Help? Join our <a href="http://discord.gg/dtube" target="_blank">Discord</a>!
+        </div>
+    </form>
+{% endblock %}

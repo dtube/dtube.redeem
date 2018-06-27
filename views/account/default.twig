@@ -1,0 +1,87 @@
+{% extends '../layout.twig' %}
+{% block title %}Your account: @{{ code.username }}{% endblock %}
+{% block body %}
+    <div class="card">
+        <div class="card border-success">
+            <div class="card-header text-dark text-center font-weight-bold"><h5 class="card-title mb-0"
+                                                                                style="text-transform: none;">Your
+                    account {{ code.username }} was created!</h5></div>
+            <div class="card-body text-dark pt-0">
+
+                <h3 class="mt-1">Welcome to STEEM & DTube</h3>
+
+                <p class="card-text">
+                    Save your keys and password. They can <b>NOT</b> be restored by us at any time.
+                </p>
+                <hr/>
+                <div class="form-group">
+                    Your Master password:
+                    <input class="form-control" type="text" readonly value="{{ code.credentials.password }}">
+                </div>
+                <div class="form-group">
+                    Your Private <b>Owner</b> Key:
+                    <input class="form-control" type="text" readonly value="{{ code.credentials.privateKeys.owner }}">
+                    <aside class="text-muted">Used to change other keys.</aside>
+                </div>
+                <div class="form-group">
+                    Your Private <b>Active</b> Key:
+                    <input class="form-control" type="text" readonly value="{{ code.credentials.privateKeys.active }}">
+                    <aside class="text-muted">Used to send STEEM and SBD.</aside>
+                </div>
+                <div class="form-group">
+                    Your Private <b>Posting</b> Key:
+                    <input class="form-control" type="text" readonly value="{{ code.credentials.privateKeys.posting }}">
+                    <aside class="text-muted">Used to login to DTube, Steemit and Co.</aside>
+                </div>
+
+                <div class="alert alert-danger">
+                    <b>Please read this carefully!</b><hr />
+                    <p>With leaving this page I confirm that I have written down <b>ALL</b> my keys from above.<br />I understand that neither DTube nor Steemit Inc. can recover my password when I loose it.</p>
+
+                </div>
+
+               <div class="row">
+                   <div class="col">
+                       <div class="form-check">
+                           <input type="checkbox" id="iknowwhatiamdoing">
+                           <label class="font-weight-light ml-1" for="iknowwhatiamdoing">I read the information above and have written down my keys.</label>
+                       </div>
+                   </div>
+               </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <button type="button" id="goSteemit" disabled class="btn btn-success btn-lg btn-block">
+                            Go to: Steemit.com
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" id="goDTube" disabled class="btn btn-info btn-lg btn-block">
+                            Go to: DTube
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $(() => {
+            $('#iknowwhatiamdoing').change(() => {
+                if($('#iknowwhatiamdoing').prop('checked')) {
+                    $('#goDTube, #goSteemit').removeAttr('disabled','disabled')
+                    $('#goDTube').click(() => {
+                        window.location.href="https://d.tube/#!/c/{{ code.username }}";
+                    });
+                    $('#goSteemit').click(() => {
+                        window.location.href="https://steemit.com/@{{ code.username }}";
+                    });
+
+                } else {
+                    $('#goDTube, #goSteemit').off('click').attr('disabled','disabled')
+                }
+            })
+        })
+    </script>
+{% endblock %}

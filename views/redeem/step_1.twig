@@ -1,0 +1,126 @@
+{% extends '../layout.twig' %}
+
+{% block body %}
+    <form action="/r/{{ code.code }}/2" method="post">
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input pattern="[a-z][a-z0-9\-]+[a-z0-9]" type="text" min="3" name="account" id="username" maxlength="16" class="form-control">
+            <aside class="text-muted">This will be your username on the STEEM blockchain</aside>
+            <div id="username_error_alert" class="d-none alert alert-danger mt-1 text-white">
+                <i class="fa fa-info"></i>
+                This username is <span id="username_error"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="username">Your Name</label>
+            <input type="text" min="3" name="fullname" maxlength="32" class="form-control">
+            <aside class="text-muted">Your full name will be displayed on DTube and Steemit.</aside>
+        </div>
+
+        <div class="form-group">
+            <label for="tags">Profile Image</label>
+            <div class="input-group">
+                <input type="text" class="form-control" value="" id="previewimage" name="previewimage" readonly=""
+                       aria-label="Preview Image">
+                <div class="input-group-append">
+                    <button id="upload_now" class="btn btn-sm btn-secondary" type="button">
+                        Select Image
+                    </button>
+                </div>
+            </div>
+            <input id="upload_select" type="file" class="d-none">
+        </div>
+
+        <div class="my-3">
+            <input type="submit"
+                   class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn"
+                   value="Next"/>
+        </div>
+        <div id="support" class="text-center mt-4 font-weight-light">
+            Need Help? Join our <a href="http://discord.gg/dtube" target="_blank">Discord</a>!
+        </div>
+    </form>
+{% endblock %}
+{% block script %}
+    <script src="https://wehmoen.github.io/pixelhosting-js-sdk/pixelhosting.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/steem@0.7.1/dist/steem.min.js"></script>
+    <script>
+        $(() => {
+
+            $('#username').on('change', () => {
+                let selectedUsername = $('#username').val();
+                console.log(selectedUsername)
+                if (selectedUsername.length < 4 || selectedUsername > 16) {
+                    $('#username').parent().addClass('has-danger');
+                    if (selectedUsername.length < 4) {
+                        $('#username_error').text('to short. The username must be at least 4 characters long.')
+                        $('#username_error_alert').removeClass('d-none')
+                    }
+                    if (selectedUsername.length > 16) {
+                        $('#username_error').text('to long. The username must be no longer than 16 characters long.')
+                        $('#username_error_alert').removeClass('d-none')
+                    }
+                } else {
+                    steem.api.lookupAccounts($('#username').val(), 15, function (err, result) {
+                        if (result.includes(selectedUsername)) {
+                            $('#username_error').text('already taken. Please choose another one.')
+                            $('#username_error_alert').removeClass('d-none')
+                        } else {
+                            $('#username_error_alert').addClass('d-none')
+                            $('#username').parent().removeClass('has-danger')
+                        }
+                    });
+                }
+
+            });
+
+            $('#upload_now').click(() => {
+                $('#upload_select').click();
+            });
+
+            $('#upload_select').on('change', () => {
+
+                let upldr_btn = $('#upload_now');
+                upldr_btn.html('<i class="fa fa-spin fa-spinner"></i>');
+
+                if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+                    alert('The File APIs are not fully supported in this browser.');
+                    upldr_btn.html('Select Image');
+                    return;
+                }
+
+                input = document.getElementById('upload_select');
+                if (!input) {
+                    alert("Um, couldn't find the fileinput element.");
+                    upldr_btn.html('Select Image');
+                }
+                else if (!input.files) {
+                    alert("This browser doesn't seem to support the `files` property of file inputs.");
+                    upldr_btn.html('Select Image');
+                }
+                else if (!input.files[0]) {
+                    alert("Please select an image before clicking the upload button.");
+                    upldr_btn.html('Select Image');
+                }
+                else {
+                    file = input.files[0];
+                    fr = new FileReader();
+                    fr.onload = () => {
+                        $.pixelUpload({
+                            "x-api-key": "4kjCosdIQC9LyXLZIRz04NU0Y6cZOuz2HXRZs89g",
+                            "x-api-key-id": "jgitusuglb",
+                        }, fr.result).then((data) => {
+                            $('#previewimage').val(data.secure_url);
+                            upldr_btn.html('Select Image');
+                        })
+                    };
+                    //fr.readAsText(file);
+                    fr.readAsDataURL(file);
+                }
+            })
+        })
+    </script>
+
+{% endblock %}

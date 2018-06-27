@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Redeem d.tube voucher{% endblock %}</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="/css/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="/css/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="/css/vendors/css/vendor.bundle.addons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="/images/favicon.ico?v=1.0.3"/>
+</head>
+
+<body>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-stretch auth auth-img-bg">
+            <div class="row flex-grow">
+                <div class="col-lg auth login-half-bg d-flex align-items-center justify-content-center">
+                    <div class="auth-form-light text-left p-3">
+                        <div class="brand-logo">
+                            <img src="https://about.d.tube/img/kit/Logo_Black.svg" style="margin-left: -18px;" alt="logo">
+                        </div>
+                        {% if info is defined %}
+                            <div class="row">
+                                <div class="col">
+                                    <div class="alert alert-danger text-white">
+                                        <i class="fa fa-info"> </i>
+                                        {{ info }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% block body %}{% endblock %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
+<!-- plugins:js -->
+<script src="/js/vendor.bundle.base.js"></script>
+
+<!-- endinject -->
+<!-- inject:js -->
+<script src="/js/off-canvas.js"></script>
+<script src="/js/hoverable-collapse.js"></script>
+<script src="/js/misc.js"></script>
+<script src="/js/settings.js"></script>
+<script src="/js/todolist.js"></script>
+{% block script %}{% endblock %}
+<!-- endinject -->
+</body>
+
+</html>

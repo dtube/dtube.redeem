@@ -1,0 +1,65 @@
+{% extends './layout.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            <h2>Welcome!</h2>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-3">
+            <div class="card ">
+                <div class="card-header ">
+                    <h4 class="card-title">Generated Accounts</h4>
+                    <p class="card-category">Wow! The people MUST love us!</p>
+                </div>
+                <div class="card-body text-center">
+                        <span class="badge badge-dark badge-lg">
+                            {{ accounts|length }}
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card ">
+                <div class="card-header ">
+                    <h4 class="card-title">Unused Codes</h4>
+                    <p class="card-category">Sooo much potential!</p>
+                </div>
+                <div class="card-body text-center">
+                        <span class="badge badge-dark badge-lg">
+                            {{ codes|length }}
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card ">
+                <div class="card-header ">
+                    <h4 class="card-title">Account Balance</h4>
+                    <p class="card-category">$$$</p>
+                </div>
+                <div class="card-body text-center">
+                        <span class="badge badge-dark badge-lg">
+                            {{ balance }}
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card ">
+                <div class="card-header ">
+                    <h4 class="card-title">STEEM Power</h4>
+                    <p class="card-category">💸 Soooo mighty!!!</p>
+                </div>
+                <div class="card-body text-center">
+                        <span class="badge badge-dark badge-lg">
+                            {{ sp }} SP
+                        </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
