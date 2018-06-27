@@ -10,4 +10,3 @@ create table dtube_invite.code (
   constraint code_code_uindex
   unique (code)
 );
-

@@ -29,7 +29,7 @@
                         <td>{% if code.used is not null %}{{ code.used|date("d. M Y H:i:s") }}{% else %}not yet{% endif %}</td>
                         {% if code.credentials is not null %}
                             {% set credentials = code.credentials|json_decode %}
-                            <td><a href="https://stemmit.com/@{{ credentials.username }}">{{ credentials.username }}</a></td>
+                            <td><a href="https://steemit.com/@{{ credentials.username }}">{{ credentials.username }}</a></td>
                         {% else %}
                             <td><i>not used</i></td>
                         {% endif %}
