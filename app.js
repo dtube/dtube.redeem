@@ -69,6 +69,8 @@ app.use(function(err, req, res, next) {
       console.error(err)
   }
 
+    console.error(err)
+
   // render the error page
   res.status(err.status || 500);
   if (fs.existsSync(__dirname + '/views/error/'+err.status+'.twig')) {

@@ -63,7 +63,6 @@ router.post('/codes/create', (req, res) => {
         res.set('Content-Disposition', 'attachment; filename="codes.csv"');
         res.send(csv);
 
-
     }
 })
 
