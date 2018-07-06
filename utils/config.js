@@ -35,7 +35,7 @@ let sysConfig = {
 };
 
 if (process.env.env !== "dev") {
-    sysConfig = JSON.parse(fs.readFileSync("/run/secrets/redeemconfig.json"));
+    sysConfig = JSON.parse(fs.readFileSync("/mnt/bin/redeem/config.json"));
 }
 
 
