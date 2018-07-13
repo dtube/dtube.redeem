@@ -13,7 +13,7 @@ let generalConfig = {
     new_account_sp_delegation: 15,
     webHost: 'http://localhost:8081',
     admin_accounts: ["wehmoen","heimindanger","dtube"]
-}
+};
 
 let sysConfig = {
     steemconnect: {

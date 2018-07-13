@@ -45,6 +45,9 @@ router.get('/v/:code?', (req, res, next) => {
 router.get('/r/:code?', (req, res, next) => {
     if (req.params.code) {
         database.code.findOneBy({code: req.params.code}, (err, code) => {
+
+            console.log(err);
+
             if (code.length === 1) {
                 code = code[0];
                 if (code.username !== null) {
