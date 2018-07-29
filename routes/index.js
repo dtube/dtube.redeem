@@ -27,7 +27,7 @@ router.get('/auth/callback', (req, res) => {
 
 router.get('/v/:code?', (req, res, next) => {
     if (req.params.code) {
-        database.code.findOneBy({viewkey: req.params.code}, (err, code) => {
+        database.code.findOneBy({viewkey: req.params.code.trim()}, (err, code) => {
             if (code.length === 1) {
                 code = code[0];
                 code.credentials = JSON.parse(code.credentials);
@@ -42,22 +42,23 @@ router.get('/v/:code?', (req, res, next) => {
     }
 });
 
+//Display redeem form. Either prefilled and readonly or as a normal text input
 router.get('/r/:code?', (req, res, next) => {
-    if (req.params.code) {
-        database.code.findOneBy({code: req.params.code}, (err, code) => {
+    if (req.params.code) { //check if the code parameter in the url is set
+        database.code.findOneBy({code: req.params.code}, (err, code) => { //check if the code exists
 
             console.log(err);
 
-            if (code.length === 1) {
+            if (code.length === 1) { //if a code is found
                 code = code[0];
-                if (code.username !== null) {
-                    res.render('error/redeemed');
+                if (code.username !== null) { //and the username is not null
+                    res.render('error/redeemed'); // show that this code is already used
                 } else {
                     req.session.code = code;
-                    res.render('redeem/' + code.type, {code});
+                    res.render('redeem/' + code.type, {code}); //else show the redeem platform
                 }
             } else {
-                res.render('error/invalid');
+                res.render('error/invalid'); // in case the code is not in the database show that the code is invalid
             }
         })
     } else {
