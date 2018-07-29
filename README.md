@@ -1,5 +1,7 @@
 # DTube REDEEM
 
+The source code for [vip.d.tube](https://vip.d.tube)
+
 ## Installation
 
 - git clone
