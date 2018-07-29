@@ -43,7 +43,7 @@ router.get('/v/:code?', (req, res, next) => {
 });
 
 //Display redeem form. Either prefilled and readonly or as a normal text input
-router.get('/r/:code?', (req, res, next) => {
+router.get('/r/:code?', (req, res) => {
     if (req.params.code) { //check if the code parameter in the url is set
         database.code.findOneBy({code: req.params.code}, (err, code) => { //check if the code exists
 
@@ -69,7 +69,7 @@ router.get('/r/:code?', (req, res, next) => {
 /**
  * This method processes the account creation and collects data as the username, display name and profile picutre
  */
-router.post('/r/:code?/:step?', (req, res, next) => {
+router.post('/r/:code?/:step?', (req, res) => {
     if (req.params.code) {
         database.code.findOneBy({code: req.params.code, username: null}, (err, code) => {
             if (code.length === 1) {

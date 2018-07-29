@@ -8,17 +8,17 @@ if (process.env.env === "dev") {
     console.log("USING STEEM TESTNET");
     console.log("===================");
 
-    steem.config.address_prefix = 'STX'
-    steem.config.websocket = 'wss://testnet.steem.vc'
-    steem.config.chain_id = '79276aea5d4877d9a25892eaa01b0adf019d3e5cb12a97478df3298ccdd01673'
-    steem.config.uri = 'https://testnet.steem.vc'
-    steem.config.dev_uri = 'https://testnet.steem.vc'
-    steem.config.stage_uri = 'https://testnet.steem.vc'
+    steem.config.address_prefix = 'STX';
+    steem.config.websocket = 'wss://testnet.steem.vc';
+    steem.config.chain_id = '79276aea5d4877d9a25892eaa01b0adf019d3e5cb12a97478df3298ccdd01673';
+    steem.config.uri = 'https://testnet.steem.vc';
+    steem.config.dev_uri = 'https://testnet.steem.vc';
+    steem.config.stage_uri = 'https://testnet.steem.vc';
 
     steem.api.getAccounts(["wehmoen"], (err, result) => {
 
         if (!JSON.parse(result[0].json_metadata).hasOwnProperty("ip")) {
-            console.error("Steem should be on testnet but it is not. PANIC!")
+            console.error("Steem should be on testnet but it is not. PANIC!");
             process.exit(1)
         }
 
@@ -27,17 +27,17 @@ if (process.env.env === "dev") {
 
 
 async function sp_to_vests(sp) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         steem.api.getDynamicGlobalProperties(function (err2, chainProps) {
             let steem_per_mvest = parseFloat(chainProps.total_vesting_fund_steem) / parseFloat(chainProps.total_vesting_shares);
             let result = Math.round(sp / steem_per_mvest) + '.000000 VESTS';
             resolve(result)
         });
     });
-};
+}
 
 async function getFee() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         steem.api.getChainProperties((err, props) => {
             steem.api.getConfig((err, config) => {
                 let modifier = config.STEEM_CREATE_ACCOUNT_WITH_STEEM_MODIFIER ? config.STEEM_CREATE_ACCOUNT_WITH_STEEM_MODIFIER : 30;
@@ -79,7 +79,7 @@ module.exports = {
         let credentials = getNewCredentials(username);
         let fee = "3.000 STEEM";
         let viewkey = serial.generate(20, "-", 5);
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             steem.broadcast.accountCreate(require('./config').account.wif, fee, require('./config').account.name, credentials.username, credentials.keys.owner, credentials.keys.active, credentials.keys.posting, credentials.keys.memo, JSON.stringify(require('./config').new_account_json_metadata(display_name, avatar_url)), function(err, bcResult) {
                 console.log(JSON.stringify({err, result: bcResult, credentials, viewkey}));
                 database.code.update(token.id, {
@@ -87,7 +87,7 @@ module.exports = {
                     viewkey,
                     used: (new Date()).toISOString().slice(0, 19).replace('T', ' '),
                     username
-                }, (err, result) => {
+                }, () => {
                     resolve({result: bcResult, credentials, viewkey})
                 })
             });
@@ -98,7 +98,7 @@ module.exports = {
         let fee = await getFee();
         let delegation = await sp_to_vests(sp_delegation);
         let viewkey = serial.generate(20, "-", 5);
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             steem.broadcast.accountCreateWithDelegation(require('./config').account.wif, fee, delegation, require('./config').account.name, credentials.username, credentials.keys.owner, credentials.keys.active, credentials.keys.posting, credentials.keys.memo, JSON.stringify(require('./config').new_account_json_metadata(display_name, avatar_url)), [], function (err, bcResult) {
                 console.log(JSON.stringify({err, result: bcResult, credentials, viewkey}));
                 database.code.update(token.id, {
@@ -106,7 +106,7 @@ module.exports = {
                     viewkey,
                     used: (new Date()).toISOString().slice(0, 19).replace('T', ' '),
                     username
-                }, (err, result) => {
+                }, () => {
                     resolve({result: bcResult, credentials, viewkey})
                 })
             });
