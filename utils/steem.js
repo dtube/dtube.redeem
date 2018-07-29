@@ -75,18 +75,41 @@ function getNewCredentials(username) {
 }
 
 module.exports = {
-    createAccount: async (token, username, sp_delegation, display_name, avatar_url) => {
+    createAccount: async (token, username, display_name, avatar_url) => {
+        let credentials = getNewCredentials(username);
+        let fee = "3.000 STEEM";
+        let viewkey = serial.generate(20, "-", 5);
+        return new Promise((resolve, reject) => {
+            steem.broadcast.accountCreate(require('./config').account.wif, fee, require('./config').account.name, credentials.username, credentials.keys.owner, credentials.keys.active, credentials.keys.posting, credentials.keys.memo, JSON.stringify(require('./config').new_account_json_metadata(display_name, avatar_url)), function(err, bcResult) {
+                console.log(JSON.stringify({err, result: bcResult, credentials, viewkey}));
+                database.code.update(token.id, {
+                    credentials: JSON.stringify(credentials),
+                    viewkey,
+                    used: (new Date()).toISOString().slice(0, 19).replace('T', ' '),
+                    username
+                }, (err, result) => {
+                    resolve({result: bcResult, credentials, viewkey})
+                })
+            });
+        })
+    },
+    createAccountWithDelegation: async (token, username, sp_delegation, display_name, avatar_url) => {
         let credentials = getNewCredentials(username);
         let fee = await getFee();
         let delegation = await sp_to_vests(sp_delegation);
         let viewkey = serial.generate(20, "-", 5);
-       return new Promise((resolve, reject) => {
-           steem.broadcast.accountCreateWithDelegation(require('./config').account.wif, fee, delegation, require('./config').account.name, credentials.username, credentials.keys.owner, credentials.keys.active, credentials.keys.posting, credentials.keys.memo, JSON.stringify(require('./config').new_account_json_metadata(display_name,avatar_url)), [], function(err, bcResult) {
-               console.log(JSON.stringify({err,result:bcResult,credentials, viewkey}));
-               database.code.update(token.id, {credentials: JSON.stringify(credentials),viewkey,used:(new Date()).toISOString().slice(0, 19).replace('T', ' '), username}, (err, result) => {
-                    resolve({result:bcResult,credentials, viewkey})
+        return new Promise((resolve, reject) => {
+            steem.broadcast.accountCreateWithDelegation(require('./config').account.wif, fee, delegation, require('./config').account.name, credentials.username, credentials.keys.owner, credentials.keys.active, credentials.keys.posting, credentials.keys.memo, JSON.stringify(require('./config').new_account_json_metadata(display_name, avatar_url)), [], function (err, bcResult) {
+                console.log(JSON.stringify({err, result: bcResult, credentials, viewkey}));
+                database.code.update(token.id, {
+                    credentials: JSON.stringify(credentials),
+                    viewkey,
+                    used: (new Date()).toISOString().slice(0, 19).replace('T', ' '),
+                    username
+                }, (err, result) => {
+                    resolve({result: bcResult, credentials, viewkey})
                 })
-           });
-       })
+            });
+        })
     }
 };

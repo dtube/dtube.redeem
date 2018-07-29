@@ -62,10 +62,13 @@ router.get('/r/:code?', (req, res, next) => {
             }
         })
     } else {
-        res.render('redeem/default');
+        res.render('redeem/default'); // render default redeem page where a user can enter a code
     }
 });
 
+/**
+ * This method processes the account creation and collects data as the username, display name and profile picutre
+ */
 router.post('/r/:code?/:step?', (req, res, next) => {
     if (req.params.code) {
         database.code.findOneBy({code: req.params.code, username: null}, (err, code) => {
@@ -85,7 +88,7 @@ router.post('/r/:code?/:step?', (req, res, next) => {
                                 if (!account) {
                                     res.redirect('/r/' + req.session.code.code)
                                 } else {
-                                    steemHelper.createAccount(req.session.code, account, require('../utils/config').new_account_sp_delegation, fullname, previewimage).then(account => {
+                                    steemHelper.createAccount(req.session.code, account, fullname, previewimage).then(account => {
                                         res.redirect('/v/' + account.viewkey);
                                     })
                                 }

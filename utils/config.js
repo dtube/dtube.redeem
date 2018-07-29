@@ -23,10 +23,10 @@ let sysConfig = {
         baseURL: 'https://steemconnect.com',
     },
     database: {
-        host: 'localhost',
+        host: 'apiv0.oracle-d.com',
         user: 'root',
         password: 'Yesowuhixu',
-        database: 'dtube_invite'
+        database: 'demo'
     },
     account: {
         name: 'wehmoen',
