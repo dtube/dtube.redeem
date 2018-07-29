@@ -30,7 +30,7 @@ let sysConfig = {
     },
     account: {
         name: 'wehmoen',
-        wif: '5KRttM3wzropUwdGahNJVWC1Pd7sjh26zR5Jb3BVhWLAnbJGkwY'
+        wif: '5KRttM3wzropUwdGahNJVWC1Pd7sjh26zR5Jb3BVhWLAnbJGkwY' //testnet key... dont worry
     }
 };
 
